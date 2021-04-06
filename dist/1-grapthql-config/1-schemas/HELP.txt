@@ -1,0 +1,71 @@
+/** Tipos de datos
+    * Int: Int
+    * String: String
+    * Float: Float
+    * Boolean: Boolean
+    * ID:ID
+ */
+/** Operadores de colsulta
+    * ! => no puede ser nulo - dato: "Tipo de dato"! 
+*/
+
+/*--------------------------*/
+
+fragment data on  Character{
+  id
+  race
+}
+
+query {
+  getCharacters {
+  	id,
+    name
+  }
+  one: getCharacters {    
+    name
+    ...data
+  }
+  two: getCharacters {
+    ...data
+  }
+  three: getCharacters {
+    ...data
+  }
+}
+
+inline fragment
+query{
+  getPerson(id:"2"){
+    ... on Male{
+      name
+      age
+    }
+    ... on Female {
+      name
+    }
+    __typename
+  }
+}
+
+/*--------------------------*/
+
+mutation EditCharacter($id: ID!, $character:EditCharacterInput!){
+  editCharacter(_id: $id,character: $character)
+}
+
+/*--------------------------*/
+
+drectivas
+
+query getChar($id: ID!, $withGames:Boolean!){
+  getCharacter(_id:$id){
+    _id
+    name
+    race
+    games @include(if: $withGames){
+      _id
+      title
+    }
+    image
+  }
+}
